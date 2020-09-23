@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS 1332 Grade Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="application/javascript">
+        function getHomeworks() {
+            let homeworks = [];
+            for(let i = 1; i < 7; i++) {
+                homeworks.push(parseFloat(document.getElementById("hw" + i).value));
+            }
+            return homeworks;
+        }
+
+        function getExams() {
+            let exams = []
+            for(let i = 1; i < 4; i++) {
+                exams.push(parseFloat(document.getElementById("exam" + i).value));
+            }
+            return exams
+        }
+
+        function getValidFloats(homeworks) {
+            let valid = [];
+            for(let i = 0; i < homeworks.length; i++) {
+                if(!isNaN(homeworks[i])) {
+                    valid.push(homeworks[i]);
+                }
+            }
+            return valid;
+        }
+
+        function setFinalOutput(output) {
+            document.getElementById("result").innerHTML = output;
+        }
+
+        function sum(nums) {
+            return nums.reduce((a, b) => a + b, 0);
+        }
+
+        function average(nums) {
+            return sum(nums)/nums.length;
+        }
+
+        function onClick() {
+            let participation = parseFloat(document.getElementById("par").value);
+            let hwSelect = document.getElementById("hwSelect");
+            let useAverageHomework = hwSelect.options[hwSelect.selectedIndex].text === "Yes";
+            let examSelect = document.getElementById("examSelect");
+            let useAverageExam = examSelect.options[examSelect.selectedIndex].text === "Yes";
+            let hws = [homework1, homework2, homework3, homework4, homework5, homework6] = getHomeworks();
+            let exams = [exam1, exam2, exam3] = getExams();
+            let final = parseFloat(document.getElementById("exam4").value);
+            console.log(participation)
+            console.log(useAverageHomework)
+            console.log(useAverageExam)
+            console.log(hws)
+            console.log(exams)
+            let hwAvg;
+            let validHomeworks = getValidFloats(hws);
+            if(useAverageHomework) {
+                hwAvg = average(validHomeworks);
+            }
+            else {
+                if(validHomeworks.length !== hws.length) {
+                    setFinalOutput("Error");
+                    return;
+                }
+                else {
+                    hwAvg = average(validHomeworks);
+                }
+            }
+            let examAvg;
+            let validExams = getValidFloats(exams);
+            if (useAverageExam) {
+                examAvg = average(validExams);
+                final = examAvg
+            } else {
+                if (validExams.length !== exams.length || isNaN(final)) {
+                    setFinalOutput("Error");
+                    return;
+                } else {
+                    examAvg = average(validExams);
+                }
+            }
+            console.log(hwAvg)
+            console.log(examAvg)
+            let avg = participation + hwAvg * 0.13 + examAvg * 0.6 + final * 0.24;
+            console.log(typeof avg)
+            if(avg >= 90) {
+                setFinalOutput("A " + avg);
+            }
+            else if(avg >= 80) {
+                setFinalOutput("B " + avg);
+            }
+            else if(avg >= 70) {
+                setFinalOutput("C " + avg);
+            }
+            else if(avg >= 60) {
+                setFinalOutput("D " + avg);
+            }
+            else {
+                setFinalOutput("F " + avg);
+            }
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+    <a class="navbar-brand">CS 1332 Grade Calculator</a>
+</nav>
+<div>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <br/>
+            <h1>Participation 3%</h1>
+            <div class="input-group mb-3">
+                <input id="par" type="text" class="form-control" placeholder="Percent (out of 3)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h1>Homework 13%</h1>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="hwSelect">Use average of available scores</label>
+                </div>
+                <select class="custom-select" id="hwSelect">
+                    <option selected value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+            <h3>Homework 1</h3>
+            <div class="input-group mb-3">
+                <input id="hw1" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 2</h3>
+            <div class="input-group mb-3">
+                <input id="hw2" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 3</h3>
+            <div class="input-group mb-3">
+                <input id="hw3" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 4</h3>
+            <div class="input-group mb-3">
+                <input id="hw4" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 5</h3>
+            <div class="input-group mb-3">
+                <input id="hw5" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 6</h3>
+            <div class="input-group mb-3">
+                <input id="hw6" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h6>I don't know how many homeworks we have tbh...</h6>
+            <h1>Exams 84%</h1>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="examSelect">Use average of available scores</label>
+                </div>
+                <select class="custom-select" id="examSelect">
+                    <option selected value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+            <h3>Exam 1</h3>
+            <div class="input-group mb-3">
+                <input id="exam1" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Exam 2</h3>
+            <div class="input-group mb-3">
+                <input id="exam2" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Exam 3</h3>
+            <div class="input-group mb-3">
+                <input id="exam3" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Final Exam</h3>
+            <div class="input-group mb-3">
+                <input id="exam4" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <button id="submit" onclick="onClick()" type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+            <br/>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Final Grade</h1>
+                    <p id="result" class="lead"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
