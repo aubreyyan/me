@@ -8,7 +8,7 @@
     <script type="application/javascript">
         function getHomeworks() {
             let homeworks = [];
-            for(let i = 1; i < 7; i++) {
+            for(let i = 1; i < 11; i++) {
                 homeworks.push(parseFloat(document.getElementById("hw" + i).value));
             }
             return homeworks;
@@ -50,14 +50,9 @@
             let useAverageHomework = hwSelect.options[hwSelect.selectedIndex].text === "Yes";
             let examSelect = document.getElementById("examSelect");
             let useAverageExam = examSelect.options[examSelect.selectedIndex].text === "Yes";
-            let hws = [homework1, homework2, homework3, homework4, homework5, homework6] = getHomeworks();
+            let hws = [homework1, homework2, homework3, homework4, homework5, homework6, homework7, homework8, homework9, homework10] = getHomeworks();
             let exams = [exam1, exam2, exam3] = getExams();
             let final = parseFloat(document.getElementById("exam4").value);
-            console.log(participation)
-            console.log(useAverageHomework)
-            console.log(useAverageExam)
-            console.log(hws)
-            console.log(exams)
             let hwAvg;
             let validHomeworks = getValidFloats(hws);
             if(useAverageHomework) {
@@ -85,10 +80,7 @@
                     examAvg = average(validExams);
                 }
             }
-            console.log(hwAvg)
-            console.log(examAvg)
-            let avg = participation + hwAvg * 0.13 + examAvg * 0.6 + final * 0.24;
-            console.log(typeof avg)
+            let avg = participation * 0.03 + hwAvg * 0.13 + examAvg * 0.6 + final * 0.24;
             if(avg >= 90) {
                 setFinalOutput("A " + avg);
             }
@@ -155,7 +147,22 @@
             <div class="input-group mb-3">
                 <input id="hw6" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
             </div>
-            <h6>I don't know how many homeworks we have tbh...</h6>
+            <h3>Homework 7</h3>
+            <div class="input-group mb-3">
+                <input id="hw7" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 8</h3>
+            <div class="input-group mb-3">
+                <input id="hw8" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 9</h3>
+            <div class="input-group mb-3">
+                <input id="hw9" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Homework 10</h3>
+            <div class="input-group mb-3">
+                <input id="hw10" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
             <h1>Exams 84%</h1>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">

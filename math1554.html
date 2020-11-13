@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MATH 1554 Grade Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="application/javascript">
+        function getQuizzes(drop) {
+            let quizzes = [];
+            for(let i = 1; i < 5; i++) {
+                quizzes.push(parseFloat(document.getElementById("qz" + i).value));
+            }
+            if(drop) {
+                let min = Math.min.apply(null, quizzes);
+                quizzes = quizzes.filter((e) => {return e !== min});
+            }
+            return quizzes;
+        }
+
+        function getMidterms() {
+            let midterms = [];
+            for(let i = 1; i < 5; i++) {
+                midterms.push(parseFloat(document.getElementById("mt" + i).value));
+            }
+            return midterms;
+        }
+
+        function setFinalOutput(output) {
+            document.getElementById("result").innerHTML = output;
+        }
+
+        function sum(nums) {
+            return nums.reduce((a, b) => a + b, 0);
+        }
+
+        function average(nums) {
+            return sum(nums)/nums.length;
+        }
+
+        function getValidFloats(quizzes) {
+            let valid = [];
+            for(let i = 0; i < quizzes.length; i++) {
+                if(!isNaN(quizzes[i])) {
+                    valid.push(quizzes[i]);
+                }
+            }
+            return valid;
+        }
+
+        function onClick() {
+            let exp = parseFloat(document.getElementById("exp").value);
+            let mml = parseFloat(document.getElementById("mml").value);
+            let ciosSelect = document.getElementById("ciosSelect");
+            let dropLowestQuiz = ciosSelect.options[ciosSelect.selectedIndex].text === "Yes";
+            let quizzes = [quiz1, quiz2, quiz3, quiz4] = getQuizzes(dropLowestQuiz);
+            let midterms = [midterm1, midterm2, midterm3, final] = getMidterms();
+            let qzSelect = document.getElementById("qzSelect");
+            let useAverageQuiz = qzSelect.options[qzSelect.selectedIndex].text === "Yes";
+            let examSelect = document.getElementById("examSelect");
+            let useAverageExam = examSelect.options[examSelect.selectedIndex].text === "Yes";
+            let qzAvg;
+            let validQuizzes = getValidFloats(quizzes);
+            if(useAverageQuiz) {
+                qzAvg = average(validQuizzes);
+            }
+            else {
+                if(validQuizzes.length !== quizzes.length) {
+                    setFinalOutput("Error");
+                    return;
+                }
+                else {
+                    qzAvg = average(validQuizzes);
+                }
+            }
+            let avg = exp * 0.1 + mml * 0.15 + qzAvg * 0.15;
+            let sortedMidterms = [midterm1, midterm2, midterm3].sort();
+            let mtAvg = average(getValidFloats(midterms));
+            if(useAverageExam) {
+                avg += (isNaN(sortedMidterms[2]) ? mtAvg : sortedMidterms[2]) * 0.2;
+                avg += (isNaN(sortedMidterms[1]) ? mtAvg : sortedMidterms[1]) * 0.15;
+                avg += (isNaN(sortedMidterms[0]) ? mtAvg : sortedMidterms[0]) * 0.1;
+                avg += (isNaN(final) ? mtAvg : final) * 0.15;
+            }else {
+                avg += sortedMidterms[2] * 0.2 + sortedMidterms[1] * 0.15 + sortedMidterms[0] * 0.1;
+                avg += final * 0.15;
+            }
+            if(avg >= 90) {
+                setFinalOutput("A " + avg);
+            }
+            else if(avg >= 80) {
+                setFinalOutput("B " + avg);
+            }
+            else if(avg >= 70) {
+                setFinalOutput("C " + avg);
+            }
+            else if(avg >= 60) {
+                setFinalOutput("D " + avg);
+            }
+            else {
+                setFinalOutput("F " + avg);
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+    <a class="navbar-brand">MATH 1554 Grade Calculator</a>
+</nav>
+<div>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <br/>
+            <h1>Exploration/Matlab 10%</h1>
+            <div class="input-group mb-3">
+                <input id="exp" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h1>MML Homework 15%</h1>
+            <div class="input-group mb-3">
+                <input id="mml" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h1>Quizzes 15%</h1>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="qzSelect">Use average of available scores</label>
+                </div>
+                <select class="custom-select" id="qzSelect">
+                    <option selected value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="ciosSelect">Drop lowest quiz, assuming CIOS</label>
+                </div>
+                <select class="custom-select" id="ciosSelect">
+                    <option selected value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+            <h3>Quiz 1</h3>
+            <div class="input-group mb-3">
+                <input id="qz1" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Quiz 2</h3>
+            <div class="input-group mb-3">
+                <input id="qz2" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Quiz 3</h3>
+            <div class="input-group mb-3">
+                <input id="qz3" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Quiz 4</h3>
+            <div class="input-group mb-3">
+                <input id="qz4" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+
+            <h1>Exams 60%</h1>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="examSelect">Use average of available scores</label>
+                </div>
+                <select class="custom-select" id="examSelect">
+                    <option selected value="1">Yes</option>
+                    <option value="2">No</option>
+                </select>
+            </div>
+            <h3>Midterm 1</h3>
+            <div class="input-group mb-3">
+                <input id="mt1" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Midterm 2</h3>
+            <div class="input-group mb-3">
+                <input id="mt2" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Midterm 3</h3>
+            <div class="input-group mb-3">
+                <input id="mt3" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <h3>Final Exam 15%</h3>
+            <div class="input-group mb-3">
+                <input id="mt4" type="text" class="form-control" placeholder="Percent (out of 100)" aria-label="Percent" aria-describedby="basic-addon1">
+            </div>
+            <button id="submit" onclick="onClick()" type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+            <br/>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Final Grade</h1>
+                    <p id="result" class="lead"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
